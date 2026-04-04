@@ -346,11 +346,16 @@ Window {
                                 border.width: 1
                                 border.color: Qt.rgba(1, 1, 1, 0.16)
 
-                                IconVisual {
+                                Image {
                                     anchors.centerIn: parent
-                                    glyphText: glyph("home")
-                                    iconSize: 24
-                                    tintColor: themeModel.text
+                                    source: "assets/icon_color.svg"
+                                    width: 26
+                                    height: 26
+                                    fillMode: Image.PreserveAspectFit
+                                    asynchronous: true
+                                    cache: true
+                                    smooth: true
+                                    mipmap: true
                                 }
                             }
 

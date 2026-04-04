@@ -2,12 +2,32 @@
 from __future__ import annotations
 
 import json
+import os
 import sys
 import time
 from pathlib import Path
 
 
-APP_DIR = Path(__file__).resolve().parents[2]
+def _resolve_hanauta_src() -> Path:
+    script_path = Path(__file__).resolve()
+    candidates: list[Path] = []
+    env_src = str(os.environ.get("HANAUTA_SRC", "")).strip()
+    if env_src:
+        candidates.append(Path(env_src).expanduser())
+    candidates.extend(
+        [
+            script_path.parents[2] / "src",
+            script_path.parents[1] / "src",
+            Path.home() / ".config" / "i3" / "hanauta" / "src",
+        ]
+    )
+    for candidate in candidates:
+        if (candidate / "pyqt").exists():
+            return candidate
+    return script_path.parents[2]
+
+
+APP_DIR = _resolve_hanauta_src()
 if str(APP_DIR) not in sys.path:
     sys.path.append(str(APP_DIR))
 
@@ -40,10 +60,11 @@ def home_assistant_enabled(settings: dict) -> bool:
     services = settings.get("services", {})
     if not isinstance(services, dict):
         return False
-    service = services.get("home_assistant", {})
-    if not isinstance(service, dict):
-        return False
-    return bool(service.get("enabled", True))
+    for service_key in ("home_assistant_widget", "home_assistant"):
+        service = services.get(service_key, {})
+        if isinstance(service, dict) and "enabled" in service:
+            return bool(service.get("enabled", True))
+    return False
 
 
 def configured_base_url(settings: dict) -> str:

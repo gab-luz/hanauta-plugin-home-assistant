@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import json
+import os
 import signal
 import subprocess
 import sys
@@ -13,11 +14,29 @@ from PyQt6.QtQml import QQmlApplicationEngine
 from PyQt6.QtWidgets import QApplication
 
 
-APP_DIR = Path(__file__).resolve().parents[2]
-ROOT = APP_DIR.parents[1]
+def _resolve_hanauta_src() -> Path:
+    script_path = Path(__file__).resolve()
+    candidates: list[Path] = []
+    env_src = str(os.environ.get("HANAUTA_SRC", "")).strip()
+    if env_src:
+        candidates.append(Path(env_src).expanduser())
+    candidates.extend(
+        [
+            script_path.parents[2] / "src",
+            script_path.parents[1] / "src",
+            Path.home() / ".config" / "i3" / "hanauta" / "src",
+        ]
+    )
+    for candidate in candidates:
+        if (candidate / "pyqt").exists():
+            return candidate
+    return script_path.parents[2]
+
+
+APP_DIR = _resolve_hanauta_src()
 SETTINGS_FILE = Path.home() / ".local" / "state" / "hanauta" / "notification-center" / "settings.json"
 QML_FILE = Path(__file__).resolve().with_suffix(".qml")
-FONTS_DIR = ROOT / "assets" / "fonts"
+FONTS_DIR = APP_DIR / "assets" / "fonts"
 SETTINGS_PAGE = APP_DIR / "pyqt" / "settings-page" / "settings.py"
 
 if str(APP_DIR) not in sys.path:
@@ -191,10 +210,11 @@ class Backend(QObject):
         services = self._settings.get("services", {})
         if not isinstance(services, dict):
             return True
-        service = services.get("home_assistant", {})
-        if not isinstance(service, dict):
-            return True
-        return bool(service.get("enabled", True))
+        for service_key in ("home_assistant_widget", "home_assistant"):
+            service = services.get(service_key, {})
+            if isinstance(service, dict) and "enabled" in service:
+                return bool(service.get("enabled", True))
+        return True
 
     def _rebuild_views(self) -> None:
         query = self._search_query.strip().lower()
@@ -470,7 +490,13 @@ class Backend(QObject):
 
     @pyqtSlot()
     def openSettings(self) -> None:
-        command = entry_command(SETTINGS_PAGE, "--page", "services", "--service-section", "home_assistant")
+        command = entry_command(
+            SETTINGS_PAGE,
+            "--page",
+            "services",
+            "--service-section",
+            "home_assistant_widget",
+        )
         if not command:
             return
         try:
