@@ -16,6 +16,21 @@ Window {
         return backend.materialIcon(name)
     }
 
+    property var domainChips: [
+        { label: "Lights",   icon: "lightbulb",  query: "light." },
+        { label: "Switches", icon: "toggle_on",  query: "switch." },
+        { label: "Sensors",  icon: "sensors",    query: "sensor." },
+        { label: "Climate",  icon: "thermostat", query: "climate." },
+        { label: "Covers",   icon: "blinds",     query: "cover." },
+        { label: "Locks",    icon: "lock",       query: "lock." },
+        { label: "Media",    icon: "speaker",    query: "media_player." },
+        { label: "Scenes",   icon: "auto_awesome", query: "scene." },
+        { label: "Fans",     icon: "mode_fan",   query: "fan." },
+        { label: "Vacuum",   icon: "robot_vacuum", query: "vacuum." },
+        { label: "Cameras",  icon: "camera",     query: "camera." },
+        { label: "Persons",  icon: "account_circle", query: "person." },
+    ]
+
     component IconVisual: Item {
         id: iconRoot
         property string glyphText: ""
@@ -83,6 +98,7 @@ Window {
             border.width: 1
             border.color: Qt.rgba(1, 1, 1, 0.10)
             opacity: circleButton.enabled ? 1.0 : 0.55
+            Behavior on color { ColorAnimation { duration: 120 } }
         }
 
         contentItem: Text {
@@ -153,6 +169,7 @@ Window {
             border.width: 1
             border.color: softButton.strokeColor
             opacity: softButton.enabled ? 1.0 : 0.55
+            Behavior on color { ColorAnimation { duration: 120 } }
         }
 
         contentItem: Row {
@@ -177,6 +194,63 @@ Window {
                 font.pixelSize: 11
                 font.weight: Font.DemiBold
                 color: softButton.textColor
+                renderType: Text.NativeRendering
+                anchors.verticalCenter: parent.verticalCenter
+            }
+        }
+    }
+
+    component FilterChip: Button {
+        id: filterChip
+        property string chipIcon: ""
+        property color activeColor: themeModel.primary
+        property bool isActive: false
+
+        implicitHeight: 34
+        leftPadding: 12
+        rightPadding: 14
+        topPadding: 0
+        bottomPadding: 0
+        spacing: 7
+        hoverEnabled: true
+
+        background: Rectangle {
+            radius: 17
+            color: filterChip.pressed
+                   ? Qt.rgba(filterChip.activeColor.r, filterChip.activeColor.g, filterChip.activeColor.b, 0.22)
+                   : filterChip.hovered
+                       ? Qt.rgba(filterChip.activeColor.r, filterChip.activeColor.g, filterChip.activeColor.b, 0.12)
+                       : filterChip.isActive
+                           ? Qt.rgba(filterChip.activeColor.r, filterChip.activeColor.g, filterChip.activeColor.b, 0.16)
+                           : Qt.rgba(1, 1, 1, 0.05)
+            border.width: 1
+            border.color: filterChip.isActive
+                          ? Qt.rgba(filterChip.activeColor.r, filterChip.activeColor.g, filterChip.activeColor.b, 0.35)
+                          : Qt.rgba(1, 1, 1, 0.08)
+            Behavior on color { ColorAnimation { duration: 140 } }
+            Behavior on border.color { ColorAnimation { duration: 140 } }
+        }
+
+        contentItem: Row {
+            spacing: filterChip.spacing
+            anchors.verticalCenter: parent.verticalCenter
+
+            Text {
+                visible: filterChip.chipIcon !== ""
+                text: filterChip.chipIcon
+                font.family: backend.materialFontFamily
+                font.pixelSize: 16
+                color: filterChip.isActive ? filterChip.activeColor : themeModel.textMuted
+                renderType: Text.NativeRendering
+                anchors.verticalCenter: parent.verticalCenter
+            }
+
+            Text {
+                text: filterChip.text
+                font.family: backend.uiFontFamily
+                font.pixelSize: 11
+                font.weight: Font.DemiBold
+                color: filterChip.isActive ? filterChip.activeColor : themeModel.text
                 renderType: Text.NativeRendering
                 anchors.verticalCenter: parent.verticalCenter
             }
@@ -315,7 +389,7 @@ Window {
             ColumnLayout {
                 anchors.fill: parent
                 anchors.margins: 18
-                spacing: 14
+                spacing: 12
 
                 Rectangle {
                     Layout.fillWidth: true
@@ -405,16 +479,19 @@ Window {
 
                                 CircleButton {
                                     iconText: glyph("refresh")
+                                    tooltipText: "Refresh entities now"
                                     onClicked: backend.refresh()
                                 }
 
                                 CircleButton {
                                     iconText: glyph("settings")
+                                    tooltipText: "Open plugin settings"
                                     onClicked: backend.openSettings()
                                 }
 
                                 CircleButton {
                                     iconText: glyph("close")
+                                    tooltipText: "Close popup"
                                     onClicked: backend.closeWindow()
                                 }
                             }
@@ -451,16 +528,133 @@ Window {
                     }
                 }
 
+                Rectangle {
+                    Layout.fillWidth: true
+                    radius: 22
+                    color: Qt.rgba(1, 1, 1, 0.065)
+                    border.width: 1
+                    border.color: Qt.rgba(1, 1, 1, 0.12)
+                    implicitHeight: 56
+
+                    RowLayout {
+                        anchors.fill: parent
+                        anchors.margins: 12
+                        spacing: 12
+
+                        Rectangle {
+                            width: 34
+                            height: 34
+                            radius: 14
+                            color: Qt.rgba(1, 1, 1, 0.08)
+                            border.width: 1
+                            border.color: Qt.rgba(1, 1, 1, 0.12)
+
+                            Text {
+                                anchors.centerIn: parent
+                                text: glyph("search")
+                                font.family: backend.materialFontFamily
+                                font.pixelSize: 18
+                                color: themeModel.textMuted
+                                renderType: Text.NativeRendering
+                            }
+                        }
+
+                        TextField {
+                            Layout.fillWidth: true
+                            placeholderText: "Search entities, rooms, domains, states..."
+                            text: backend.searchQuery
+                            color: themeModel.text
+                            placeholderTextColor: themeModel.textMuted
+                            font.family: backend.uiFontFamily
+                            font.pixelSize: 12
+                            selectByMouse: true
+                            background: Rectangle {
+                                radius: 16
+                                color: "transparent"
+                            }
+                            onTextChanged: backend.setSearchQuery(text)
+
+                            Rectangle {
+                                visible: backend.searchQuery.length > 0
+                                anchors.right: parent.right
+                                anchors.verticalCenter: parent.verticalCenter
+                                width: 24
+                                height: 24
+                                radius: 12
+                                color: Qt.rgba(1, 1, 1, 0.1)
+
+                                Text {
+                                    anchors.centerIn: parent
+                                    text: glyph("close")
+                                    font.family: backend.materialFontFamily
+                                    font.pixelSize: 14
+                                    color: themeModel.textMuted
+                                    renderType: Text.NativeRendering
+                                }
+
+                                MouseArea {
+                                    anchors.fill: parent
+                                    cursorShape: Qt.PointingHandCursor
+                                    onClicked: backend.setSearchQuery("")
+                                }
+                            }
+                        }
+                    }
+                }
+
+                Flickable {
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: 40
+                    contentWidth: domainRow.implicitWidth
+                    clip: true
+                    boundsBehavior: Flickable.StopAtBounds
+                    flickableDirection: Flickable.HorizontalFlick
+                    interactive: contentWidth > width
+
+                    ScrollBar.horizontal: ScrollBar { policy: ScrollBar.AlwaysOff }
+
+                    Row {
+                        id: domainRow
+                        spacing: 8
+
+                        Repeater {
+                            model: root.domainChips
+
+                            FilterChip {
+                                text: modelData.label
+                                chipIcon: glyph(modelData.icon)
+                                isActive: backend.searchQuery === modelData.query
+
+                                onClicked: {
+                                    if (isActive) {
+                                        backend.setSearchQuery("")
+                                    } else {
+                                        backend.setSearchQuery(modelData.query)
+                                    }
+                                }
+                            }
+                        }
+
+                        FilterChip {
+                            text: "All"
+                            chipIcon: glyph("home")
+                            isActive: backend.searchQuery.length === 0
+
+                            onClicked: backend.setSearchQuery("")
+                        }
+                    }
+                }
+
                 RowLayout {
                     Layout.fillWidth: true
                     spacing: 12
 
                     SummaryCard {
                         Layout.fillWidth: true
-                        eyebrow: "Pinned scenes"
+                        eyebrow: "Pinned controls"
                         valueText: backend.pinnedEntities.length.toString()
                         helperText: backend.pinnedEntities.length > 0
-                                    ? "Quick actions stay parked here for one-tap control."
+                                    ? "Quick actions parked here for one-tap control."
                                     : "Pin up to five entities to build your shortcut dock."
                         accentColor: themeModel.primary
                         accentIcon: glyph("push_pin")
@@ -471,8 +665,8 @@ Window {
                         eyebrow: "Visible now"
                         valueText: backend.entities.length.toString()
                         helperText: backend.searchQuery.length > 0
-                                    ? "Filtered results for your current search."
-                                    : "Entities streamed from hanauta-service cache."
+                                    ? "Filtered results for current search."
+                                    : "Entities from hanauta-service cache."
                         accentColor: themeModel.good
                         accentIcon: glyph("bolt")
                     }
@@ -485,6 +679,7 @@ Window {
                     border.width: 1
                     border.color: Qt.rgba(1, 1, 1, 0.10)
                     implicitHeight: pinnedColumn.implicitHeight + 24
+                    visible: backend.pinnedEntities.length > 0
 
                     ColumnLayout {
                         id: pinnedColumn
@@ -538,6 +733,11 @@ Window {
                                         color: Qt.rgba(1, 1, 1, 0.07)
                                         border.width: 1
                                         border.color: Qt.rgba(1, 1, 1, 0.10)
+
+                                        scale: pinHoverHandler.hovered ? 1.03 : 1.0
+                                        Behavior on scale { NumberAnimation { duration: 150; easing.type: Easing.OutCubic } }
+
+                                        HoverHandler { id: pinHoverHandler }
 
                                         ColumnLayout {
                                             anchors.fill: parent
@@ -600,40 +800,18 @@ Window {
 
                                             Item { Layout.fillHeight: true }
 
-                                                SoftButton {
-                                                    Layout.fillWidth: true
-                                                    text: modelData.actionLabel
-                                                    iconText: glyph("play_arrow")
-                                                    visible: modelData.canToggle
-                                                    implicitHeight: 30
-                                                    fillColor: Qt.rgba(themeModel.primary.r, themeModel.primary.g, themeModel.primary.b, 0.16)
-                                                    strokeColor: Qt.rgba(themeModel.primary.r, themeModel.primary.g, themeModel.primary.b, 0.28)
-                                                    textColor: themeModel.text
+                                            SoftButton {
+                                                Layout.fillWidth: true
+                                                text: modelData.actionLabel
+                                                iconText: glyph("play_arrow")
+                                                visible: modelData.canToggle
+                                                implicitHeight: 30
+                                                fillColor: Qt.rgba(themeModel.primary.r, themeModel.primary.g, themeModel.primary.b, 0.16)
+                                                strokeColor: Qt.rgba(themeModel.primary.r, themeModel.primary.g, themeModel.primary.b, 0.28)
+                                                textColor: themeModel.text
                                                 onClicked: backend.activateEntity(modelData.entityId)
                                             }
                                         }
-                                    }
-                                }
-
-                                Rectangle {
-                                    visible: backend.pinnedEntities.length === 0
-                                    width: Math.max(300, root.width - 92)
-                                    height: 60
-                                    radius: 18
-                                    color: Qt.rgba(1, 1, 1, 0.045)
-                                    border.width: 1
-                                    border.color: Qt.rgba(1, 1, 1, 0.08)
-
-                                    Text {
-                                        anchors.centerIn: parent
-                                        width: parent.width - 24
-                                        text: "Pin the devices and scenes you touch every day. They will stay here as a calm quick-access row."
-                                        color: themeModel.textMuted
-                                        font.family: backend.uiFontFamily
-                                        font.pixelSize: 11
-                                        wrapMode: Text.WordWrap
-                                        horizontalAlignment: Text.AlignHCenter
-                                        renderType: Text.NativeRendering
                                     }
                                 }
                             }
@@ -659,7 +837,7 @@ Window {
                             Layout.fillWidth: true
 
                             Text {
-                                text: "Favorites"
+                                text: "Quick toggles"
                                 color: themeModel.text
                                 font.family: backend.displayFontFamily
                                 font.pixelSize: 16
@@ -670,7 +848,7 @@ Window {
                             Item { Layout.fillWidth: true }
 
                             Text {
-                                text: "Quick toggles"
+                                text: backend.favoriteEntities.length > 0 ? "Tap to toggle" : "No toggleable entities"
                                 color: themeModel.textMuted
                                 font.family: backend.uiFontFamily
                                 font.pixelSize: 11
@@ -688,9 +866,7 @@ Window {
                             boundsBehavior: Flickable.StopAtBounds
                             flickableDirection: Flickable.HorizontalFlick
                             interactive: contentWidth > width
-                            ScrollBar.horizontal: ScrollBar {
-                                policy: ScrollBar.AsNeeded
-                            }
+                            ScrollBar.horizontal: ScrollBar { policy: ScrollBar.AsNeeded }
 
                             Row {
                                 id: favoriteRow
@@ -706,6 +882,11 @@ Window {
                                         color: Qt.rgba(1, 1, 1, 0.065)
                                         border.width: 1
                                         border.color: Qt.rgba(1, 1, 1, 0.10)
+
+                                        scale: favHoverHandler.hovered ? 1.04 : 1.0
+                                        Behavior on scale { NumberAnimation { duration: 150; easing.type: Easing.OutCubic } }
+
+                                        HoverHandler { id: favHoverHandler }
 
                                         RowLayout {
                                             anchors.fill: parent
@@ -792,59 +973,8 @@ Window {
 
                 Rectangle {
                     Layout.fillWidth: true
-                    radius: 22
-                    color: Qt.rgba(1, 1, 1, 0.055)
-                    border.width: 1
-                    border.color: Qt.rgba(1, 1, 1, 0.10)
-                    implicitHeight: 56
-
-                    RowLayout {
-                        anchors.fill: parent
-                        anchors.margins: 12
-                        spacing: 12
-
-                        Rectangle {
-                            width: 34
-                            height: 34
-                            radius: 14
-                            color: Qt.rgba(1, 1, 1, 0.06)
-                            border.width: 1
-                            border.color: Qt.rgba(1, 1, 1, 0.10)
-
-                            Text {
-                                anchors.centerIn: parent
-                                text: glyph("search")
-                                font.family: backend.materialFontFamily
-                                font.pixelSize: 18
-                                color: themeModel.textMuted
-                                renderType: Text.NativeRendering
-                            }
-                        }
-
-                        TextField {
-                            Layout.fillWidth: true
-                            placeholderText: "Search entities, rooms, domains, states..."
-                            text: backend.searchQuery
-                            color: themeModel.text
-                            placeholderTextColor: themeModel.textMuted
-                            font.family: backend.uiFontFamily
-                            font.pixelSize: 12
-                            selectByMouse: true
-                            background: Rectangle {
-                                radius: 16
-                                color: Qt.rgba(1, 1, 1, 0.05)
-                                border.width: 1
-                                border.color: Qt.rgba(1, 1, 1, 0.08)
-                            }
-                            onTextChanged: backend.setSearchQuery(text)
-                        }
-                    }
-                }
-
-                Rectangle {
-                    Layout.fillWidth: true
                     Layout.fillHeight: true
-                    Layout.minimumHeight: 320
+                    Layout.minimumHeight: 200
                     radius: 24
                     color: Qt.rgba(1, 1, 1, 0.050)
                     border.width: 1
@@ -853,7 +983,7 @@ Window {
                     ColumnLayout {
                         anchors.fill: parent
                         anchors.margins: 14
-                        spacing: 12
+                        spacing: 10
 
                         RowLayout {
                             Layout.fillWidth: true
@@ -889,10 +1019,11 @@ Window {
                         }
 
                         ListView {
+                            id: entityList
                             Layout.fillWidth: true
                             Layout.fillHeight: true
                             clip: true
-                            spacing: 10
+                            spacing: 8
                             model: backend.entities
                             boundsBehavior: Flickable.StopAtBounds
                             ScrollBar.vertical: ScrollBar {
@@ -907,10 +1038,27 @@ Window {
                                 color: Qt.rgba(1, 1, 1, 0.060)
                                 border.width: 1
                                 border.color: modelData.stateTone === "active"
-                                              ? Qt.rgba(themeModel.primary.r, themeModel.primary.g, themeModel.primary.b, 0.26)
+                                              ? Qt.rgba(themeModel.primary.r, themeModel.primary.g, themeModel.primary.b, 0.22)
                                               : Qt.rgba(1, 1, 1, 0.08)
 
+                                scale: entityHoverHandler.hovered ? 1.015 : 1.0
+                                Behavior on scale { NumberAnimation { duration: 150; easing.type: Easing.OutCubic } }
+                                Behavior on border.color { ColorAnimation { duration: 180 } }
+
+                                HoverHandler { id: entityHoverHandler }
+
                                 property bool expanded: false
+
+                                Rectangle {
+                                    anchors.top: parent.top
+                                    anchors.bottom: parent.bottom
+                                    anchors.left: parent.left
+                                    width: 4
+                                    radius: 2
+                                    visible: modelData.stateTone === "active"
+                                    color: themeModel.primary
+                                    opacity: modelData.stateTone === "active" ? 0.7 : 0.0
+                                }
 
                                 ColumnLayout {
                                     id: contentColumn
@@ -1002,7 +1150,7 @@ Window {
 
                                     RowLayout {
                                         Layout.fillWidth: true
-                                        spacing: 8
+                                        spacing: 6
 
                                         Text {
                                             Layout.fillWidth: true
@@ -1018,8 +1166,8 @@ Window {
                                             text: modelData.isPinned ? "Pinned" : "Pin"
                                             iconText: modelData.isPinned ? glyph("push_pin") : glyph("push_pin_outline")
                                             tooltipText: modelData.isPinned
-                                                          ? "Remove this entity from quick toggles"
-                                                          : "Pin this entity to quick toggles"
+                                                          ? "Remove from pinned shortcuts"
+                                                          : "Pin to shortcuts"
                                             fillColor: modelData.isPinned
                                                        ? Qt.rgba(themeModel.primary.r, themeModel.primary.g, themeModel.primary.b, 0.15)
                                                        : Qt.rgba(1, 1, 1, 0.05)
@@ -1033,7 +1181,7 @@ Window {
                                             visible: modelData.canToggle
                                             text: modelData.actionLabel
                                             iconText: glyph("play_arrow")
-                                            tooltipText: "Send the main Home Assistant action to this entity"
+                                            tooltipText: "Send action to entity"
                                             fillColor: Qt.rgba(themeModel.primary.r, themeModel.primary.g, themeModel.primary.b, 0.15)
                                             strokeColor: Qt.rgba(themeModel.primary.r, themeModel.primary.g, themeModel.primary.b, 0.24)
                                             onClicked: backend.activateEntity(modelData.entityId)
@@ -1043,8 +1191,8 @@ Window {
                                             text: entityCard.expanded ? "Hide" : "Details"
                                             iconText: entityCard.expanded ? glyph("expand_more") : glyph("chevron_right")
                                             tooltipText: entityCard.expanded
-                                                          ? "Collapse the entity details"
-                                                          : "Expand the entity details"
+                                                          ? "Collapse details"
+                                                          : "Expand details"
                                             onClicked: entityCard.expanded = !entityCard.expanded
                                         }
                                     }
@@ -1058,13 +1206,15 @@ Window {
                                         border.color: Qt.rgba(1, 1, 1, 0.07)
                                         implicitHeight: detailsText.implicitHeight + 20
 
+                                        Behavior on implicitHeight { NumberAnimation { duration: 200; easing.type: Easing.OutCubic } }
+
                                         Text {
                                             id: detailsText
                                             anchors.fill: parent
                                             anchors.margins: 10
                                             text: modelData.details.length > 0
                                                   ? modelData.details
-                                                  : "No extra attributes were exposed for this entity."
+                                                  : "No extra attributes exposed for this entity."
                                             color: themeModel.textMuted
                                             font.family: backend.uiFontFamily
                                             font.pixelSize: 10

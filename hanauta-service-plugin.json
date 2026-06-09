@@ -1,0 +1,19 @@
+{
+  "plugin_id": "home_assistant",
+  "tasks": [
+    {
+      "id": "fetch_entities",
+      "enabled": true,
+      "interval_seconds": 30,
+      "timeout_seconds": 25,
+      "command": ["sh", "-c", "python3 \"$HANAUTA_PLUGIN_DIR/fetch_home_assistant_cache.py\""]
+    },
+    {
+      "id": "prefetch_icons",
+      "enabled": true,
+      "interval_seconds": 60,
+      "timeout_seconds": 30,
+      "command": ["sh", "-c", "python3 \"$HANAUTA_PLUGIN_DIR/home_assistant_icon_prefetch.py\" --once"]
+    }
+  ]
+}

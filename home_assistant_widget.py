@@ -69,11 +69,13 @@ MATERIAL_ICONS = {
     "person": "\ue7fd",
     "lightbulb": "\ue0f0",
     "toggle_on": "\ue9f6",
+    "toggle_off": "\ue9f5",
     "videocam": "\ue04b",
     "thermostat": "\ue1ff",
     "device_thermostat": "\ue1ff",
     "sensors": "\ue51e",
     "lock": "\ue897",
+    "lock_open": "\ue898",
     "music_note": "\ue405",
     "window": "\uefe8",
     "mode_fan": "\uf168",
@@ -89,6 +91,171 @@ MATERIAL_ICONS = {
     "play_arrow": "\ue037",
     "chevron_right": "\ue5cc",
     "expand_more": "\ue5cf",
+    "power": "\ue8ac",
+    "power_off": "\ue847",
+    "door": "\ueb51",
+    "door_front": "\ueb52",
+    "door_open": "\ueb54",
+    "window_open": "\ue78c",
+    "window_closed": "\ue77e",
+    "motion_sensor": "\ue7d8",
+    "smoke_detector": "\ue616",
+    "co2": "\ue7b0",
+    "leak": "\ue798",
+    "temperature": "\ue7b6",
+    "humidity": "\ue7b2",
+    "ceiling_light": "\ue769",
+    "floor_lamp": "\uf05e",
+    "string_lights": "\uf05f",
+    "led_strip": "\uf07a",
+    "power_plug": "\ue8cd",
+    "outlet": "\ue8ce",
+    "curtains": "\ue1c4",
+    "blinds": "\ue317",
+    "roller_shade": "\ue0c6",
+    "garage": "\ue011",
+    "garage_door": "\ue012",
+    "speaker": "\ue32d",
+    "tv": "\ue333",
+    "play_circle": "\ue039",
+    "pause_circle": "\ue160",
+    "radio": "\ue32e",
+    "volume_up": "\ue050",
+    "volume_off": "\ue04f",
+    "microphone": "\ue029",
+    "camera": "\ue3af",
+    "robot_vacuum": "\ue5d1",
+    "robot": "\uf166",
+    "cleaning_services": "\ue0ff",
+    "palette": "\ue40a",
+    "script_text": "\ue818",
+    "code": "\ue86f",
+    "smart_toy": "\uea29",
+    "schedule": "\ue8b5",
+    "routine": "\ue173",
+    "account": "\ue7fd",
+    "account_circle": "\ue853",
+    "account_group": "\ue7fc",
+    "wb_sunny": "\ue430",
+    "sunny": "\ue81d",
+    "cloud": "\ue2bd",
+    "cloud_off": "\ue2c0",
+    "thunderstorm": "\uebdb",
+    "rainy": "\ue67a",
+    "foggy": "\ue40e",
+    "snowing": "\ue80f",
+    "air": "\ue2b0",
+    "ac_unit": "\ueb3b",
+    "water_heater": "\ue7d7",
+    "hot_tub": "\ueb46",
+    "fireplace": "\ueba3",
+    "deck": "\ue986",
+    "umbrella": "\uf0c1",
+    "beach_access": "\ueb3e",
+    "grass": "\uf205",
+    "local_florist": "\uf1bd",
+    "wb_twilight": "\ue1c6",
+    "brightness_5": "\ue3a8",
+    "battery_full": "\ue1a4",
+    "battery_charging": "\ue1a3",
+    "signal_wifi_4_bar": "\ue1d8",
+    "bluetooth": "\ue1a7",
+    "bluetooth_connected": "\ue1a8",
+    "phone_android": "\ue324",
+    "phone_iphone": "\ue325",
+    "laptop": "\ue31e",
+    "desktop_windows": "\ue30c",
+    "tablet": "\ue32f",
+    "watch": "\ue334",
+    "headphones": "\uf281",
+    "key": "\ue73c",
+    "vpn_key": "\ue89c",
+    "fingerprint": "\ue90d",
+    "security": "\ue32a",
+    "alarm": "\ue855",
+    "notifications": "\ue7f4",
+    "notification_important": "\ue004",
+    "update": "\ue923",
+    "system_update": "\ue8b2",
+    "package_up": "\uf019",
+    "download": "\uf09a",
+    "cloud_download": "\ue2c2",
+    "timer": "\ue425",
+    "hourglass": "\ue2bf",
+    "timer_off": "\ue426",
+    "my_location": "\ue55c",
+    "map_marker": "\ue0c8",
+    "navigation": "\ue55d",
+    "compass": "\ue0b7",
+    "explore": "\ue87a",
+    "pets": "\ue91d",
+    "directions_car": "\ue531",
+    "directions_bike": "\ue52f",
+    "directions_walk": "\ue536",
+    "directions_bus": "\ue530",
+    "train": "\ue570",
+    "flight": "\ue539",
+    "check_circle": "\ue86c",
+    "error": "\ue000",
+    "warning": "\ue002",
+    "info": "\ue88e",
+    "help": "\ue887",
+    "filter_list": "\ue152",
+    "filter_alt": "\uef58",
+    "sort": "\ue164",
+    "more_vert": "\ue5d4",
+    "more_horiz": "\ue5d3",
+    "add": "\ue145",
+    "remove": "\ue15b",
+    "edit": "\ue3c9",
+    "delete": "\ue872",
+    "done": "\ue876",
+    "touch_app": "\ue904",
+    "smart_button": "\uf1c1",
+    "gesture": "\uf051",
+    "straighten": "\ue41c",
+    "tune": "\ue429",
+    "dialpad": "\ue877",
+    "text_fields": "\ue264",
+    "input": "\ue88b",
+    "exposure": "\ue3c2",
+    "dvr": "\ue132",
+    "movie": "\ue02c",
+    "music_video": "\ue063",
+    "image": "\ue3f4",
+    "widgets": "\ue1bd",
+    "devices": "\ue1b1",
+    "device_hub": "\ue335",
+    "hub": "\ue9f4",
+    "router": "\ue328",
+    "light": "\ue0f0",
+    "flash_on": "\ue3e7",
+    "flash_off": "\ue3e8",
+    "light_group": "\uf0af",
+    "kitchen": "\ueb47",
+    "bed": "\uf015",
+    "chair": "\uf017",
+    "weekend": "\ue16b",
+    "sensor_door": "\ueb51",
+    "sensor_window": "\ue77e",
+    "valve": "\ue7d6",
+    "pipe": "\uf093",
+    "fire": "\uf1cd",
+    "gas_meter": "\uecc2",
+    "energy": "\uea0b",
+    "solar_power": "\uec0e",
+    "wind_power": "\uec1c",
+    "water": "\ue798",
+    "oil_barrel": "\uec15",
+    "propane": "\uec16",
+    "countertop": "\uf072",
+    "stove": "\uf073",
+    "oven": "\uf074",
+    "microwave": "\uf204",
+    "fridge": "\uf08e",
+    "dishwasher": "\uf075",
+    "washer": "\uf076",
+    "dryer": "\uf07b",
 }
 
 
@@ -174,6 +341,20 @@ def save_settings_state(payload: dict) -> None:
     SETTINGS_FILE.write_text(json.dumps(payload, indent=2), encoding="utf-8")
 
 
+def _resolve_entity_picture(entity: dict, base_url: str) -> str:
+    picture = str(entity.get("entity_picture", "")).strip()
+    if not picture:
+        attrs = entity.get("attributes", {})
+        picture = str(attrs.get("entity_picture", "")).strip() if isinstance(attrs, dict) else ""
+    if not picture:
+        return ""
+    if picture.startswith("http://") or picture.startswith("https://"):
+        return picture
+    if picture.startswith("/"):
+        return normalize_ha_url(base_url).rstrip("/") + picture
+    return normalize_ha_url(base_url).rstrip("/") + "/" + picture
+
+
 class Backend(QObject):
     entitiesChanged = pyqtSignal()
     pinnedEntitiesChanged = pyqtSignal()
@@ -195,6 +376,7 @@ class Backend(QObject):
         self._pinned_entities: list[dict[str, object]] = []
         self._favorite_entities: list[dict[str, object]] = []
         self._search_query = ""
+        self._base_url = ""
         self._busy = False
         self._available = False
         self._latency_ms = -1
@@ -239,6 +421,13 @@ class Backend(QObject):
             action = entity_action(entity)
             raw_state = str(entity.get("state", "")).strip().lower()
 
+            icon_src = icon_source_for_entity(entity, tint_color=self._icon_tint)
+            if not icon_src:
+                icon_src = _resolve_entity_picture(entity, self._base_url)
+            fav_icon_src = icon_source_for_entity(entity, tint_color="#F5F7FF")
+            if not fav_icon_src:
+                fav_icon_src = _resolve_entity_picture(entity, self._base_url)
+
             item = {
                 "entityId": entity_id,
                 "friendlyName": name,
@@ -250,8 +439,8 @@ class Backend(QObject):
                 "updatedText": entity_relative_update_text(entity),
                 "iconName": icon_name,
                 "iconGlyph": material_icon(icon_name),
-                "iconSource": icon_source_for_entity(entity, tint_color=self._icon_tint),
-                "favoriteIconSource": icon_source_for_entity(entity, tint_color="#F5F7FF"),
+                "iconSource": icon_src,
+                "favoriteIconSource": fav_icon_src,
                 "isPinned": entity_id in pinned_set,
                 "canToggle": action is not None,
                 "actionLabel": (
@@ -376,6 +565,7 @@ class Backend(QObject):
 
         base_url = normalize_ha_url(self._settings.get("home_assistant", {}).get("url", ""))
         token = str(self._settings.get("home_assistant", {}).get("token", "")).strip()
+        self._base_url = base_url
 
         if not base_url or not token:
             self._available = False
