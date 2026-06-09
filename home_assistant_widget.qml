@@ -98,7 +98,6 @@ Window {
             border.width: 1
             border.color: Qt.rgba(1, 1, 1, 0.10)
             opacity: circleButton.enabled ? 1.0 : 0.55
-            Behavior on color { ColorAnimation { duration: 120 } }
         }
 
         contentItem: Text {
@@ -169,7 +168,6 @@ Window {
             border.width: 1
             border.color: softButton.strokeColor
             opacity: softButton.enabled ? 1.0 : 0.55
-            Behavior on color { ColorAnimation { duration: 120 } }
         }
 
         contentItem: Row {
@@ -227,8 +225,6 @@ Window {
             border.color: filterChip.isActive
                           ? Qt.rgba(filterChip.activeColor.r, filterChip.activeColor.g, filterChip.activeColor.b, 0.35)
                           : Qt.rgba(1, 1, 1, 0.08)
-            Behavior on color { ColorAnimation { duration: 140 } }
-            Behavior on border.color { ColorAnimation { duration: 140 } }
         }
 
         contentItem: Row {
@@ -734,11 +730,6 @@ Window {
                                         border.width: 1
                                         border.color: Qt.rgba(1, 1, 1, 0.10)
 
-                                        scale: pinHoverHandler.hovered ? 1.03 : 1.0
-                                        Behavior on scale { NumberAnimation { duration: 150; easing.type: Easing.OutCubic } }
-
-                                        HoverHandler { id: pinHoverHandler }
-
                                         ColumnLayout {
                                             anchors.fill: parent
                                             anchors.margins: 12
@@ -883,11 +874,6 @@ Window {
                                         color: Qt.rgba(1, 1, 1, 0.065)
                                         border.width: 1
                                         border.color: Qt.rgba(1, 1, 1, 0.10)
-
-                                        scale: favHoverHandler.hovered ? 1.04 : 1.0
-                                        Behavior on scale { NumberAnimation { duration: 150; easing.type: Easing.OutCubic } }
-
-                                        HoverHandler { id: favHoverHandler }
 
                                         RowLayout {
                                             anchors.fill: parent
@@ -1042,12 +1028,6 @@ Window {
                                               ? Qt.rgba(themeModel.primary.r, themeModel.primary.g, themeModel.primary.b, 0.22)
                                               : Qt.rgba(1, 1, 1, 0.08)
 
-                                scale: entityHoverHandler.hovered ? 1.015 : 1.0
-                                Behavior on scale { NumberAnimation { duration: 150; easing.type: Easing.OutCubic } }
-                                Behavior on border.color { ColorAnimation { duration: 180 } }
-
-                                HoverHandler { id: entityHoverHandler }
-
                                 property bool expanded: false
 
                                 Rectangle {
@@ -1058,7 +1038,7 @@ Window {
                                     radius: 2
                                     visible: modelData.stateTone === "active"
                                     color: themeModel.primary
-                                    opacity: modelData.stateTone === "active" ? 0.7 : 0.0
+                                    opacity: 0.7
                                 }
 
                                 ColumnLayout {
@@ -1206,8 +1186,6 @@ Window {
                                         border.width: 1
                                         border.color: Qt.rgba(1, 1, 1, 0.07)
                                         implicitHeight: detailsText.implicitHeight + 20
-
-                                        Behavior on implicitHeight { NumberAnimation { duration: 200; easing.type: Easing.OutCubic } }
 
                                         Text {
                                             id: detailsText
