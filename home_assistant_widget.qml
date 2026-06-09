@@ -768,7 +768,8 @@ Window {
                                                 CircleButton {
                                                     implicitWidth: 30
                                                     implicitHeight: 30
-                                                    iconText: glyph("push_pin")
+                                                    iconText: glyph("push_pin_outline")
+                                                    tooltipText: "Unpin from shortcuts"
                                                     iconColor: themeModel.primary
                                                     fillColor: Qt.rgba(themeModel.primary.r, themeModel.primary.g, themeModel.primary.b, 0.14)
                                                     onClicked: backend.togglePinned(modelData.entityId)
