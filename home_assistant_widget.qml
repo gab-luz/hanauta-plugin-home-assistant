@@ -382,10 +382,36 @@ Window {
                 opacity: 0.16
             }
 
-            ColumnLayout {
+            Flickable {
+                id: mainFlickable
                 anchors.fill: parent
                 anchors.margins: 18
-                spacing: 12
+                contentWidth: width
+                contentHeight: mainColumn.implicitHeight
+                clip: true
+                boundsBehavior: Flickable.StopAtBounds
+                flickDeceleration: 1500
+
+                ScrollBar.vertical: ScrollBar {
+                    id: mainScrollbar
+                    policy: ScrollBar.AsNeeded
+                    contentItem: Rectangle {
+                        implicitWidth: 4
+                        radius: 2
+                        color: Qt.rgba(1, 1, 1, 0.28)
+                        opacity: mainScrollbar.active ? 1.0 : 0.0
+                        Behavior on opacity { NumberAnimation { duration: 400 } }
+                    }
+                    background: Rectangle {
+                        implicitWidth: 4
+                        color: "transparent"
+                    }
+                }
+
+                ColumnLayout {
+                    id: mainColumn
+                    width: mainFlickable.width
+                    spacing: 12
 
                 Rectangle {
                     Layout.fillWidth: true
@@ -960,8 +986,7 @@ Window {
 
                 Rectangle {
                     Layout.fillWidth: true
-                    Layout.fillHeight: true
-                    Layout.minimumHeight: 200
+                    Layout.preferredHeight: 380
                     radius: 24
                     color: Qt.rgba(1, 1, 1, 0.050)
                     border.width: 1
@@ -1267,6 +1292,7 @@ Window {
                         }
                     }
                 }
+            }
             }
         }
     }
