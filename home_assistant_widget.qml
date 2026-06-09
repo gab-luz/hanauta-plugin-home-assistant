@@ -61,11 +61,15 @@ Window {
         property string iconText: ""
         property color iconColor: themeModel.text
         property color fillColor: Qt.rgba(1, 1, 1, 0.06)
+        property string tooltipText: ""
 
         implicitWidth: 40
         implicitHeight: 40
         padding: 0
         hoverEnabled: true
+        ToolTip.text: circleButton.tooltipText
+        ToolTip.visible: circleButton.hovered && circleButton.tooltipText !== ""
+        ToolTip.delay: 450
 
         background: Rectangle {
             radius: width / 2
@@ -124,6 +128,7 @@ Window {
         property color strokeColor: Qt.rgba(1, 1, 1, 0.10)
         property color textColor: themeModel.text
         property string iconText: ""
+        property string tooltipText: ""
 
         implicitHeight: 36
         leftPadding: 12
@@ -132,6 +137,9 @@ Window {
         bottomPadding: 0
         spacing: 8
         hoverEnabled: true
+        ToolTip.text: softButton.tooltipText
+        ToolTip.visible: softButton.hovered && softButton.tooltipText !== ""
+        ToolTip.delay: 450
 
         background: Rectangle {
             radius: 16
@@ -1009,6 +1017,9 @@ Window {
                                         SoftButton {
                                             text: modelData.isPinned ? "Pinned" : "Pin"
                                             iconText: modelData.isPinned ? glyph("push_pin") : glyph("push_pin_outline")
+                                            tooltipText: modelData.isPinned
+                                                          ? "Remove this entity from quick toggles"
+                                                          : "Pin this entity to quick toggles"
                                             fillColor: modelData.isPinned
                                                        ? Qt.rgba(themeModel.primary.r, themeModel.primary.g, themeModel.primary.b, 0.15)
                                                        : Qt.rgba(1, 1, 1, 0.05)
@@ -1022,6 +1033,7 @@ Window {
                                             visible: modelData.canToggle
                                             text: modelData.actionLabel
                                             iconText: glyph("play_arrow")
+                                            tooltipText: "Send the main Home Assistant action to this entity"
                                             fillColor: Qt.rgba(themeModel.primary.r, themeModel.primary.g, themeModel.primary.b, 0.15)
                                             strokeColor: Qt.rgba(themeModel.primary.r, themeModel.primary.g, themeModel.primary.b, 0.24)
                                             onClicked: backend.activateEntity(modelData.entityId)
@@ -1030,6 +1042,9 @@ Window {
                                         SoftButton {
                                             text: entityCard.expanded ? "Hide" : "Details"
                                             iconText: entityCard.expanded ? glyph("expand_more") : glyph("chevron_right")
+                                            tooltipText: entityCard.expanded
+                                                          ? "Collapse the entity details"
+                                                          : "Expand the entity details"
                                             onClicked: entityCard.expanded = !entityCard.expanded
                                         }
                                     }
